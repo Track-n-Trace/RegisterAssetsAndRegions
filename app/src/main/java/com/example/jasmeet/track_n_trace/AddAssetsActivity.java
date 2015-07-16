@@ -75,7 +75,6 @@ public class AddAssetsActivity extends ActionBarActivity {
 
                         @Override
                         protected void onPostExecute(String str) {
-                            //Log.wtf("", "Received! " + json);
                             System.out.println("ResponseStr: " + responseStr);
                             System.out.println(jsonToSend.toString());
 

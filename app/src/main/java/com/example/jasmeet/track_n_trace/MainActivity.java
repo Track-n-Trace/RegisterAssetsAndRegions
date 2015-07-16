@@ -44,26 +44,16 @@ public class MainActivity extends ActionBarActivity {
         username = (EditText)findViewById(R.id.usernameText);
         password = (EditText)findViewById(R.id.passwordText);
 
-        //------------------------------------------------------------------------------------------
-        appName.setText("node-code");
-        username.setText("shubham");
-        password.setText("hehe");
-        //------------------------------------------------------------------------------------------
-
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 
-        //sp.edit().clear().commit();
 
-       // if(sp.contains("loggedIn")) {
-            Boolean isLoggedIn = sp.getBoolean("loggedIn", false);
+        Boolean isLoggedIn = sp.getBoolean("loggedIn", false);
+        System.out.println("onMainCreate: "+isLoggedIn);
 
-            System.out.println("onMainCreate: "+isLoggedIn);
-
-            if (isLoggedIn) {
-                Intent launchactivity = new Intent(MainActivity.this, AddActivity.class);
-                startActivity(launchactivity);
-            }
-        //}
+        if (isLoggedIn) {
+            Intent launchactivity = new Intent(MainActivity.this, AddActivity.class);
+            startActivity(launchactivity);
+        }
 
 
         login.setOnClickListener(new View.OnClickListener() {
@@ -73,15 +63,11 @@ public class MainActivity extends ActionBarActivity {
 
                     url = "http://" + appName.getText().toString() + ".mybluemix.net";
 
-                    //url = "http://" + appName.getText().toString();
                     //try to login
-
-
                     new PostNGet() {
                         @Override
                         protected void onPreExecute() {
 
-                            //httpContext = getBaseContext();
                             try {
                                 jsonToSend.put("username", username.getText().toString());
                                 jsonToSend.put("password", password.getText().toString());
@@ -98,10 +84,7 @@ public class MainActivity extends ActionBarActivity {
 
                         @Override
                         protected void onPostExecute(String str) {
-                            //Log.wtf("", "Received! " + json);
                             System.out.println("ResponseStr: " + responseStr);
-
-                            //responseStr = "{\"status\":true}";
 
                             SharedPreferences.Editor speditor = sp.edit();
                             speditor.putString("url", url);

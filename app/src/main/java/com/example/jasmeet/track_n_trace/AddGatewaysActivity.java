@@ -63,7 +63,6 @@ public class AddGatewaysActivity extends ActionBarActivity {
             ch.setText(tempGateway);
             ch.setTextSize(20);
             ch.setPadding(20, 30, 0, 30);
-            //linlay.setPadding(10, 80, 0, 80);
             linlay.addView(ch);
 
             ch.setOnClickListener(new View.OnClickListener(){
@@ -83,8 +82,6 @@ public class AddGatewaysActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
-                //new postData().start();
-
                 new PostNGet() {
                     @Override
                     protected void onPreExecute() {
@@ -100,8 +97,6 @@ public class AddGatewaysActivity extends ActionBarActivity {
 
                             jsonToSend.put("gateways", new JSONArray(sendGateways));
                             jsonToSend.put("points", new JSONArray(pointArrOfArr));
-                            jsonToSend.put("altLow", AddRegActivity.altLow);
-                            jsonToSend.put("altHigh", AddRegActivity.altHigh);
                             jsonToSend.put("regionName", AddRegActivity.regName.getText().toString());
                             jsonToSend.put("regionId", AddRegActivity.regId.getText().toString());
 
@@ -141,102 +136,9 @@ public class AddGatewaysActivity extends ActionBarActivity {
                     }
                 }.execute();
 
-                //Intent launchactivity = new Intent(AddGatewaysActivity.this, AddActivity.class);
-                //startActivity(launchactivity);
-
             }
         });
-
-
-
     }
-
-    public class postData extends Thread {
-
-        public void run(){
-
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost(urlToGet);
-
-            JSONObject jsonToSend = new JSONObject();
-
-            JSONArray newArr = new JSONArray();
-            JSONArray newArr2 = new JSONArray();
-
-            for(int i=0; i<AddRegActivity.lats.size(); i++){
-                Double[] temp = {AddRegActivity.lats.get(i), AddRegActivity.longs.get(i)};
-                latlongs.add(temp);
-            }
-/*
-            for(int i=0; i<MainActivity.lats.size(); i++){
-                JSONObject newObj = new JSONObject();
-                try {
-                    newObj.put("latitude", MainActivity.lats.get(i));
-                    newObj.put("longitude", MainActivity.longs.get(i));
-
-                    newArr.put(newObj);
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            for(int i=0; i<sendGateways.size(); i++){
-                JSONObject newObj = new JSONObject();
-                try {
-                    newObj.put("", sendGateways.get(i));
-                    newArr2.put(newObj);
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-*/
-            try {
-
-                ArrayList<ArrayList<Double[]>> pointArrOfArr = new ArrayList<>();
-                pointArrOfArr.add(latlongs);
-
-                jsonToSend.put("gateways", new JSONArray(sendGateways));
-                jsonToSend.put("points", new JSONArray(pointArrOfArr));
-                jsonToSend.put("altLow", AddRegActivity.altLow);
-                jsonToSend.put("altHigh", AddRegActivity.altHigh);
-                jsonToSend.put("regionName", AddRegActivity.regName.getText().toString());
-                jsonToSend.put("regionId", AddRegActivity.regId.getText().toString());
-
-                httppost.setEntity(new StringEntity(jsonToSend.toString(), "UTF8"));
-                httppost.setHeader("Content-type", "application/json");
-                HttpResponse resp = httpclient.execute(httppost);
-
-                Log.d("Status line", "" + resp.getStatusLine().getStatusCode());
-
-                if (resp != null) {
-
-                    Log.wtf("dscds", "resp recvd...!!!");
-                }
-
-                else Log.wtf("dscds", "NO RESPPP...!!!");
-
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            //MainActivity.showGPS.append(altLow + " , " + altHigh);
-
-            //MainActivity.regName.setText("");
-            //MainActivity.height.setText("");
-
-            //Toast.makeText(AddGateways.this,"Data Posted", Toast.LENGTH_LONG).show();
-
-            //MainActivity.addPoints.setEnabled(true);
-            //MainActivity.deletePrevPoint.setEnabled(false);
-
-        }
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

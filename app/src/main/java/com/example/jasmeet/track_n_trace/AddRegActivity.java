@@ -31,10 +31,9 @@ import java.util.ArrayList;
 
 public class AddRegActivity extends ActionBarActivity {
 
-    double latitude, longitude, altitude = 0;
+    double latitude, longitude = 0;
     static EditText regName;
     static EditText regId;
-    static EditText height;
 
     Button reset;
     static Button addPoints;
@@ -44,11 +43,9 @@ public class AddRegActivity extends ActionBarActivity {
     static TextView numOfPoints;
 
     static int count = 0;
-    //double points[];
     static ArrayList<Double> lats = new ArrayList<>();
     static ArrayList<Double> longs = new ArrayList<>();
-    static Double altLow = 0.0;
-    static Double altHigh = 0.0;
+
     static String[] gatewayList;
 
     SharedPreferences sp;
@@ -64,7 +61,6 @@ public class AddRegActivity extends ActionBarActivity {
 
         regName = (EditText)findViewById(R.id.regName);
         regId = (EditText)findViewById(R.id.regId);
-        height = (EditText)findViewById(R.id.regHeight);
 
         reset = (Button)findViewById(R.id.button1);
         addPoints = (Button)findViewById(R.id.button2);
@@ -89,12 +85,9 @@ public class AddRegActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
-                //System.out.println(latitude + ", " + longitude);
                 lats.add(latitude);
                 longs.add(longitude);
                 count++;
-
-                //count = lats.size();
 
                 int latsSize = lats.size();
                 numOfPoints.setText("Num of points: " + latsSize);
@@ -121,8 +114,6 @@ public class AddRegActivity extends ActionBarActivity {
 
                 int latsSize = lats.size();
                 numOfPoints.setText("Num of points: " + latsSize);
-
-                //showGPS.setText("");
 
                 addPoints.setEnabled(true);
                 deletePrevPoint.setEnabled(false);
@@ -151,17 +142,7 @@ public class AddRegActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
-                if(!regName.getText().toString().equals("") && !height.getText().toString().equals("") && !regId.getText().toString().equals("")) {
-
-                    //showGPS.setText("");
-                    //for(int i=0; i<lats.size(); i++)
-                     //   showGPS.append(lats.get(i).toString() +" , "+longs.get(i).toString() + "\n");
-
-
-                    altitude = altitude/lats.size();
-                    altLow = altitude - 1;
-
-                    altHigh = altLow + Integer.parseInt(height.getText().toString());
+                if(!regName.getText().toString().equals("") && !regId.getText().toString().equals("")) {
 
                     InputMethodManager inputManager = (InputMethodManager)
                             getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -188,14 +169,10 @@ public class AddRegActivity extends ActionBarActivity {
 
                         @Override
                         protected void onPostExecute(String str) {
-                            //Log.wtf("", "Received! " + json);
                             System.out.println("ResponseStr: " + responseStr);
                             System.out.println(jsonToSend.toString());
 
                             if (!responseStr.equals("")) {
-
-                                //responseStr = responseStr.split("\\[")[1];
-                                //responseStr = responseStr.split("]")[0];
 
                                 responseStr = responseStr.replaceAll("\\[","");
                                 responseStr = responseStr.replaceAll("]","");
@@ -215,13 +192,6 @@ public class AddRegActivity extends ActionBarActivity {
                         }
                     }.execute();
 
-
-                    //new postData2().start();
-
-                    //Intent launchactivity = new Intent(AddRegActivity.this, AddGatewaysActivity.class);
-                    //startActivity(launchactivity);
-
-
                 }
 
                 else{
@@ -238,54 +208,6 @@ public class AddRegActivity extends ActionBarActivity {
 
     }
 
-    public class getGateways extends Thread {
-
-        public void run(){
-
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpGet httpget = new HttpGet(urlToGet);
-
-
-            try {
-
-                //String jsonToSend = "";
-                //httpget.setEntity(new StringEntity(jsonToSend.toString(), "UTF8"));
-                httpget.setHeader("Content-type", "application/json");
-                HttpResponse resp = httpclient.execute(httpget);
-
-                String responseStr = EntityUtils.toString(resp.getEntity());
-
-                System.out.println(responseStr);
-
-                responseStr = responseStr.replaceAll("\\[","");
-                responseStr = responseStr.replaceAll("]","");
-                responseStr = responseStr.replaceAll("\"", "");
-                gatewayList = responseStr.split(",");
-
-                //Log.d("Status line", "" + resp.getStatusLine().getStatusCode());
-
-                if (resp != null) {
-
-                    System.out.println("resp recvd...!!!");
-
-                    for(int i=0; i<gatewayList.length; i++){
-                        System.out.println("gateways-- "+ gatewayList[i]);
-                    }
-
-                }
-
-                else System.out.println("NO RESP");
-
-
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
-        }
-    }
-
     public class MyLocationListener implements LocationListener {
 
         @Override
@@ -293,12 +215,10 @@ public class AddRegActivity extends ActionBarActivity {
 
             latitude = loc.getLatitude();
             longitude = loc.getLongitude();
-            altitude = altitude + loc.getAltitude();
 
-            String Text = "Latitude = " + loc.getLatitude() + " Longitude = " + loc.getLongitude() + " Altitude = " + loc.getAltitude();
+            String Text = "Latitude = " + loc.getLatitude() + " Longitude = " + loc.getLongitude();
 
             System.out.println(Text);
-            System.out.println("alti-- " + loc.hasAltitude());
         }
 
         @Override
