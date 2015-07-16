@@ -19,7 +19,8 @@ Anyone who is using the Track-N-Trace cloud app
 Steps to be followed
 =====================
 - Clone the "https://github.com/Track-n-Trace/RegisterAssetsAndRegions.git" repository. To do this, from a command window, navigate to the directory on your computer in which you want to clone the repository, and then enter:
-	git clone https://github.com/Track-n-Trace/RegisterAssetsAndRegions.git
+	
+	$ git clone https://github.com/Track-n-Trace/RegisterAssetsAndRegions.git
 
 - Install Android Studio (if you have not already done so)
 
